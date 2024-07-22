@@ -42,5 +42,5 @@ jobs:
 
     - name: Run Playit.gg Client
       run: |
-        Start-Process -FilePath "C:\Program Files\playit_gg\bin\playit.exe" -NoNewWindow -Wait
+        Start-Process -FilePath "C:\Program Files\playit_gg\bin\playit.exe"
       shell: powershell
