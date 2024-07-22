@@ -30,18 +30,22 @@ jobs:
         Set-LocalUser -Name "runneradmin" -Password $password
       shell: powershell
 
-    - name: Download Google Remote Desktop
+    - name: Download Playit.gg Client
       run: |
-        Invoke-WebRequest -Uri "https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi" -OutFile "$env:TEMP\chromeremotedesktophost.msi"
-        Start-Process -FilePath "$env:TEMP\chromeremotedesktophost.msi" -ArgumentList "/quiet" -Wait
+        Invoke-WebRequest -Uri "https://github.com/playit-cloud/playit-agent/releases/download/v0.15.13/playit-windows-x86_64-signed.msi" -OutFile "$env:TEMP\playit.msi"
       shell: powershell
 
-    - name: Configure Google Remote Desktop
+    - name: Install Playit.gg Client
       run: |
-        & "${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe" --code="${{ secrets.GRD_AUTH_CODE }}" --redirect-url="https://remotedesktop.google.com/_/oauthredirect" --name=$Env:COMPUTERNAME --pin=12345
+        Start-Process -FilePath "$env:TEMP\playit.msi" -ArgumentList "/quiet" -Wait
       shell: powershell
 
-    - name: Start Google Remote Desktop
+    - name: Run Python HTTP Server
       run: |
-        Start-Process -FilePath "${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\chrome-remote-desktop-host.exe" -ArgumentList "--start"
-      shell: powershell
+        python -m http.server 8080 > NUL 2>&1 &
+      shell: bash
+
+    - name: Set up localhost.run Tunnel
+      run: |
+        ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -R 80:localhost:8080 nokey@localhost.run.run
+      shell: bash
