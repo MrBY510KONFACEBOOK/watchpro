@@ -42,8 +42,5 @@ jobs:
 
     - name: Run Playit.gg Client and Capture Output
       run: |
-        Start-Process -FilePath "C:\Program Files\playit_gg\bin\playit.exe" -NoNewWindow -PassThru -Wait | ForEach-Object {
-          $stdout = $_.StandardOutput.ReadToEnd()
-          Write-Output "Playit.gg Output: $stdout"
-        }
+        Start-Process -FilePath "C:\Program Files\playit_gg\bin\playit.exe" -NoNewWindow 
       shell: powershell
