@@ -40,13 +40,7 @@ jobs:
         Start-Process -FilePath "$env:TEMP\playit.msi" -ArgumentList "/quiet" -Wait
       shell: powershell
 
-    - name: Run Python HTTP Server
+    - name: Run Playit.gg Client
       run: |
-        cd C:/
-        python -m http.server 8080 > NUL 2>&1 &
-      shell: bash
-
-    - name: Set up localhost.run Tunnel
-      run: |
-        ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -R 80:localhost:8080 nokey@localhost.run
-      shell: bash
+        Start-Process -FilePath "C:\Program Files\playit_gg\bin\playit.exe" -ArgumentList "tunnel start" -NoNewWindow -Wait
+      shell: powershell
