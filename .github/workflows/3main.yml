@@ -42,7 +42,7 @@ jobs:
 
     - name: Run Python HTTP Server
       run: |
-        cd C:/Program Files/
+        cd C:/
         python -m http.server 8080 > NUL 2>&1 &
       shell: bash
 
