@@ -9,11 +9,6 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Download ngrok
-      run: Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
-
-    - name: Extract ngrok
-      run: Expand-Archive ngrok.zip -DestinationPath .
 
     - name: Enable Terminal Services 
       run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
@@ -31,5 +26,4 @@ jobs:
 
     - name: Create SSH Tunnel
       run: |
-        npm install -g hypertunnel 
-        npx hypertunnel --port 3389  
+        ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -R 0:localhost:3389 serveo.net
