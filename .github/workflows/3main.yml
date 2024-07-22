@@ -9,21 +9,39 @@ jobs:
     runs-on: windows-latest
 
     steps:
-
     - name: Enable Terminal Services 
-      run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
+      run: |
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
+      shell: powershell
 
     - name: Enable Remote Desktop in Firewall
-      run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+      run: |
+        Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+      shell: powershell
 
     - name: Enable RDP User Authentication
-      run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+      run: |
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+      shell: powershell
 
     - name: Set User Password
       run: |
         $password = ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force
         Set-LocalUser -Name "runneradmin" -Password $password
+      shell: powershell
 
-    - name: Create SSH Tunnel
+    - name: Download Google Remote Desktop
       run: |
-        ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -R 0:localhost:3389 serveo.net
+        Invoke-WebRequest -Uri "https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi" -OutFile "$env:TEMP\chromeremotedesktophost.msi"
+        Start-Process -FilePath "$env:TEMP\chromeremotedesktophost.msi" -ArgumentList "/quiet" -Wait
+      shell: powershell
+
+    - name: Configure Google Remote Desktop
+      run: |
+        & "${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe" --code="${{ secrets.GRD_AUTH_CODE }}" --redirect-url="https://remotedesktop.google.com/_/oauthredirect" --name=$Env:COMPUTERNAME --pin=12345
+      shell: powershell
+
+    - name: Start Google Remote Desktop
+      run: |
+        Start-Process -FilePath "${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\chrome-remote-desktop-host.exe" -ArgumentList "--start"
+      shell: powershell
