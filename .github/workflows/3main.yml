@@ -47,5 +47,5 @@ jobs:
 
     - name: Set up localhost.run Tunnel
       run: |
-        ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -R 80:localhost:8080 nokey@localhost.run.run
+        ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -R 80:localhost:8080 nokey@localhost.run
       shell: bash
