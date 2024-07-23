@@ -30,17 +30,6 @@ jobs:
         Set-LocalUser -Name "runneradmin" -Password $password
       shell: powershell
 
-    - name: Download Playit.gg Client
+    - name: creat ssh tunnel
       run: |
-        Invoke-WebRequest -Uri "https://github.com/playit-cloud/playit-agent/releases/download/v0.15.13/playit-windows-x86_64-signed.msi" -OutFile "$env:TEMP\playit.msi"
-      shell: powershell
-
-    - name: Install Playit.gg Client
-      run: |
-        Start-Process -FilePath "$env:TEMP\playit.msi" -ArgumentList "/quiet" -Wait
-      shell: powershell
-
-    - name: Run Playit.gg Client and Capture Output
-      run: |
-        Start-Process -FilePath "C:\Program Files\playit_gg\bin\playit.exe" -NoNewWindow 
-      shell: powershell
+        ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -R serveo.net:3389:localhost:3389 serveo.net
