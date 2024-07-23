@@ -9,27 +9,21 @@ jobs:
     runs-on: windows-latest
 
     steps:
+
     - name: Enable Terminal Services 
-      run: |
-        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
-      shell: powershell
+      run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
 
     - name: Enable Remote Desktop in Firewall
-      run: |
-        Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
-      shell: powershell
+      run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
 
     - name: Enable RDP User Authentication
-      run: |
-        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
-      shell: powershell
+      run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
 
     - name: Set User Password
       run: |
         $password = ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force
         Set-LocalUser -Name "runneradmin" -Password $password
-      shell: powershell
 
-    - name: creat ssh tunnel
+    - name: Create SSH Tunnel
       run: |
-        ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -R serveo.net:3389:localhost:3389 serveo.net
+        ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -R 0:localhost:3389 serveo.net
