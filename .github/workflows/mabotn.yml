@@ -15,7 +15,7 @@ jobs:
 
     - name: Download and Extract file
       run: |
-        git clone https://github.com/MrBY510KONFACEBOOK/JITOSSA.git
-        cd JITOSSA
+        git clone https://github.com/MrBY510KONFACEBOOK/silana-bot.git
+        cd silana-bot
         npm install
-        npm start 
+        node index.js 
