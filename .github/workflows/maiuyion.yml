@@ -17,6 +17,12 @@ jobs:
 
     - name: Install ngrok
       run: |
-         sudo snap install ngrok 
-         sudo ngrok config add-authtoken 2eg1KXlEo9QtqqmlMEjzvvffedG_3M2dZvACkZiuWvEaZ37wJ
-         sudo ngrok tcp 22
+        sudo apt-get update
+        sudo apt-get install ngrok
+
+    - name: Configure ngrok
+      run: |
+        ngrok config add-authtoken 2eg1KXlEo9QtqqmlMEjzvvffedG_3M2dZvACkZiuWvEaZ37wJ
+
+    - name: Run ngrok
+      run: ngrok tcp 22
