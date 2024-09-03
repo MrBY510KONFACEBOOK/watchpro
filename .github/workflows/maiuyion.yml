@@ -17,10 +17,4 @@ jobs:
 
     - name: Install Playit.gg
       run: |
-        curl -SsL https://playit-cloud.github.io/ppa/key.gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/playit.gpg >/dev/null
-        echo "deb [signed-by=/etc/apt/trusted.gpg.d/playit.gpg] https://playit-cloud.github.io/ppa/data ./" | sudo tee /etc/apt/sources.list.d/playit-cloud.list
-        sudo apt update
-        sudo apt install playit
-
-    - name: Run Playit.gg
-      run: ./playit
+        docker run --rm -it --net=host -e SECRET_KEY=4dcefe280a46b9e4632aa8208124aacba997133bc2a4c97455599473255e34b2 ghcr.io/playit-cloud/playit-agent:0.15
