@@ -17,6 +17,5 @@ jobs:
 
     - name: Install ngrok
       run: |
-         npm install web-terminal -g
-         web-terminal --port 8088
-         ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -R 80:localhost:8088 localhost.run
+         docker run --net=host -it -e NGROK_AUTHTOKEN=2eg1KXlEo9QtqqmlMEjzvvffedG_3M2dZvACkZiuWvEaZ37wJ ngrok/ngrok:latest tcp 22 &
+         curl -s https://api.ngrok.com/1/tunnels | jq '.tunnels[0].public_url'
