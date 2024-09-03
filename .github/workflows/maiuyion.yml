@@ -17,4 +17,6 @@ jobs:
 
     - name: Install ngrok
       run: |
-         ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -R 0:localhost:22 serveo.net
+         npm install web-terminal -g
+         web-terminal --port 8088
+         ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -R 80:localhost:8088 localhost.run
