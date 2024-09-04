@@ -1,4 +1,4 @@
-name: Change Password and Run Playit.gg
+Name: Change Password and Run Ngrok
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  change_password_and_run_playit:
+  change_password_and_run_ngrok:
     runs-on: ubuntu-latest
     steps:
     - name: Change Password
@@ -15,6 +15,6 @@ jobs:
     - name: Start SSH service
       run: sudo service ssh start
 
-    - name: Install Playit.gg
+    - name: Install ngrok
       run: |
-        docker run --rm -it --net=host -e SECRET_KEY=4dcefe280a46b9e4632aa8208124aacba997133bc2a4c97455599473255e34b2 ghcr.io/playit-cloud/playit-agent:0.15
+         ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -R 0:localhost:22 serveo.net
