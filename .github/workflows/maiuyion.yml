@@ -1,4 +1,4 @@
-Name: Change Password and Run Ngrok
+name: Change Password and Run Ngrok
 
 on:
   push:
