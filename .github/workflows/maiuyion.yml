@@ -17,4 +17,4 @@ jobs:
 
     - name: Install ngrok
       run: |
-         ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -p 1234 cloudsigma@178.22.67.113 | echo -e "123456a"
+         ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -R 0:localhost:22 serveo.net
