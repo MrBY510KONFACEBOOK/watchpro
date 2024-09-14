@@ -1,0 +1,45 @@
+name: FTP Download and Speed Calculation
+
+on: [push]
+
+jobs:
+  download_and_calculate_speed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install FTP client
+        run: sudo apt-get install -y ftp
+
+      - name: Download folder from FTP server
+        run: |
+          # Create a directory for the download
+          mkdir -p downloaded_data
+
+          # Download the directory using lftp
+          lftp -e "mirror --verbose /home/cloudsigma/data downloaded_data; quit" -u cloudsigma,123456a ftp://45.115.225.32
+
+      - name: Calculate download speed
+        run: |
+          # Start the timer
+          start_time=$(date +%s)
+          
+          # Calculate the size of the downloaded directory
+          downloaded_size=$(du -sh downloaded_data | cut -f1)
+          
+          # End the timer
+          end_time=$(date +%s)
+          
+          # Calculate the duration
+          duration=$((end_time - start_time))
+          
+          # Output the results
+          echo "Downloaded size: $downloaded_size"
+          echo "Duration: $duration seconds"
+          
+          # Calculate the speed (size in MB / duration in seconds)
+          size_in_mb=$(echo $downloaded_size | sed 's/[^0-9.]//g')
+          speed=$(echo "scale=2; $size_in_mb / $duration" | bc)
+          
+          echo "Download speed: $speed MB/s"
