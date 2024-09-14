@@ -18,7 +18,7 @@ jobs:
           mkdir -p downloaded_data
 
           # Download the directory using wget
-          wget -r -np -nH --cut-dirs=3 -P downloaded_data ftp://cloudsigma:123456a@45.115.225.32/data
+          wget -r -np -nH --cut-dirs=3 -P downloaded_data ftp://cloudsigma:123456a@45.115.225.32/data/com.dts.freefireth
 
       - name: Calculate download speed
         run: |
