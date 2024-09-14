@@ -9,22 +9,25 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Install FTP client
-        run: sudo apt-get install -y ftp
+      - name: Install wget
+        run: sudo apt-get install -y wget
 
       - name: Download folder from FTP server
         run: |
           # Create a directory for the download
           mkdir -p downloaded_data
 
-          # Download the directory using lftp
-          lftp -e "mirror --verbose /home/cloudsigma/data downloaded_data; quit" -u cloudsigma,123456a ftp://45.115.225.32
+          # Download the directory using wget
+          wget -r -np -nH --cut-dirs=3 -P downloaded_data ftp://cloudsigma:123456a@45.115.225.32/data
 
       - name: Calculate download speed
         run: |
           # Start the timer
           start_time=$(date +%s)
           
+          # Wait for the download to complete
+          wait
+
           # Calculate the size of the downloaded directory
           downloaded_size=$(du -sh downloaded_data | cut -f1)
           
@@ -38,7 +41,7 @@ jobs:
           echo "Downloaded size: $downloaded_size"
           echo "Duration: $duration seconds"
           
-          # Calculate the speed (size in MB / duration in seconds)
+          # Convert size to MB for speed calculation
           size_in_mb=$(echo $downloaded_size | sed 's/[^0-9.]//g')
           speed=$(echo "scale=2; $size_in_mb / $duration" | bc)
           
