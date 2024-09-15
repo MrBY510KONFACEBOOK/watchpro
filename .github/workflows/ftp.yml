@@ -1,48 +1,30 @@
-name: FTP Download and Speed Calculation
+name: FTP Server Deployment
 
-on: [push]
+on: 
+  push:
+    branches:
+      - main
 
 jobs:
-  download_and_calculate_speed:
+  deploy-ftp:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v2
 
-      - name: Install wget
-        run: sudo apt-get install -y wget
-
-      - name: Download folder from FTP server
-        run: |
-          # Create a directory for the download
-          mkdir -p downloaded_data
-
-          # Download the directory using wget
-          wget -r -np -nH --cut-dirs=3 -P downloaded_data ftp://cloudsigma:123456a@45.115.225.32/data/com.dts.freefireth
-
-      - name: Calculate download speed
-        run: |
-          # Start the timer
-          start_time=$(date +%s)
-          
-          # Wait for the download to complete
-          wait
-
-          # Calculate the size of the downloaded directory
-          downloaded_size=$(du -sh downloaded_data | cut -f1)
-          
-          # End the timer
-          end_time=$(date +%s)
-          
-          # Calculate the duration
-          duration=$((end_time - start_time))
-          
-          # Output the results
-          echo "Downloaded size: $downloaded_size"
-          echo "Duration: $duration seconds"
-          
-          # Convert size to MB for speed calculation
-          size_in_mb=$(echo $downloaded_size | sed 's/[^0-9.]//g')
-          speed=$(echo "scale=2; $size_in_mb / $duration" | bc)
-          
-          echo "Download speed: $speed MB/s"
+    - name: Run FTP Server Container
+      run: |
+        docker run \
+          --detach \
+          --env FTP_PASS=1K \
+          --env FTP_USER=mollehya \
+          --name my-ftp-server \
+          --publish 20-21:20-21/tcp \
+          --publish 40000-40009:40000-40009/tcp \
+          --volume /storage:/home/mollehya \
+          garethflowers/ftp-server
+    
+    - name: Set up Serveo.net SSH Tunnel
+      run: |
+        ssh -o "StrictHostKeyChecking=no" -R 21:localhost:21 serveo.net
