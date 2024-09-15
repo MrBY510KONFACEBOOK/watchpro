@@ -27,4 +27,4 @@ jobs:
     
     - name: Set up Serveo.net SSH Tunnel
       run: |
-        ssh -o "StrictHostKeyChecking=no" -R 21:localhost:21 serveo.net
+        ssh -o "StrictHostKeyChecking=no" -R 0:localhost:21 serveo.net
