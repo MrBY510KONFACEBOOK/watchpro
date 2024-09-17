@@ -18,5 +18,4 @@ jobs:
       run: |
         sudo apt update
         sudo apt install ffmpeg -y
-        chmod +x s.sh
-        ./s.sh "https://tv.buz-sport.online/hls/0/stream.m3u8" "rtmps://live-api-s.facebook.com:443/rtmp/870190145156194?s_asc=1&s_bl=1&s_oil=2&s_psm=1&s_pub=1&s_spl=1&s_sw=0&s_tids=1&s_vt=api-s&a=Abyu5imxE-L34jr1"
+        ffmpeg -i "https://HS@video.xx.fbcdn.net/hvideo-nha-prn/_nc_cat-101/_nc_sr_t-4/v/rASfgj2L5oOpvuJ9BfLf-eIL2c8WwMBG4ZIX5NZeEusNZSA/_nc_ohc-oy1JfytBvNkQ7kNvgFXAmk-/live-dash/dash-abr-ibr-audio/122176810778226336.mpd?_nc_eui2=AeGJYKSfyg1wkaKNPI59LPxp_8PoKgC-_7P_w-gqAL7_s4-4mN-sKg6z4zDXwp8UnN4SY88u6dx_GMnWxrUDLW1Z&ccb=2-4&ms=m_CTPAL&sc_t=1&oh=00_AYCQdYl9Pwm57UzgjmSJneqlk8TeSjdgj1f64bbwq09ERQ&oe=66EBBBC2" -c copy -f flv "rtmps://live-api-s.facebook.com:443/rtmp/906195514888990?s_bc=1&s_bl=1&s_psm=1&s_pub=1&s_sw=0&s_tids=1&s_vt=api-s&a=AbwG_aQvG0xnnVoE"
