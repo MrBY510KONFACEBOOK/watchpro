@@ -4,11 +4,11 @@ on: [push, pull_request]
 
 jobs:
   systeminfo:
-    runs-on: windows-latest
+    runs-on: myrunner
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
 
     - name: Run systeminfo
-      run: systeminfo
+      run: sudo apt update
